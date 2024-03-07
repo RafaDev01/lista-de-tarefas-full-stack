@@ -22,19 +22,19 @@ No backend vamos ter uma API NodeJS + Express + MySQL para servir o frontend.
 
 # TAREFAS A DESENVOLVER NO PROJETO
 
-    > Criar a estrutura inicial
-        - base do front end(html, css, js, bootstrap)
-        - base do backend (node + express + mysql) com uma resposta padrão
+    FEITO > Criar a estrutura inicial
+    FEITO - base do front end(html, css, js, bootstrap)
+    FEITO - base do backend (node + express + mysql) com uma resposta padrão
 
-    > no frontend
-        - páginas necessárias para a navegação no app.
+    FEITO > no frontend
+    FEITO - páginas necessárias para a navegação no app.
         - pequenos teste de comunicação entre front e backend - utilização de Ajax(XMLhttprequest | fetch API)
 
-    - estrutura base de cada página
-        bootstrap (slate) bootswatch
-        fontawesome
+    FEITO - estrutura base de cada página
+    FEITO bootstrap (slate) bootswatch
+    FEITO fontawesome
     
-    - ver tarefas
+    FEITO - ver tarefas
         titulo
         filtro para escolher que tarefas queremos ver(select)
         botao para adicionar tarefas
@@ -52,5 +52,9 @@ No backend vamos ter uma API NodeJS + Express + MySQL para servir o frontend.
         input:text para editar o texto da tarefa
         botão para cancelar
         botão para submeter alteração
+
+    Backend
+    Criar um servidor NodeJS + Express + MySQL
+    criar um endpoint inicial - testar comunicações
 
     (eleminiar será feito com um modal)

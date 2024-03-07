@@ -1,0 +1,9 @@
+/* Meu CSS*/
+
+.edit_link{
+    cursor: pointer;
+}
+
+.edit_link:hover{
+    color: white;
+}
