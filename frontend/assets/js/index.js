@@ -1,17 +1,36 @@
 //javascript do index.html
 
-let id = 1
+let id_user = 1
+
+let colors = [
+    {
+        task_status: 'new',
+        select_bg_color: 'bg-white'
+    },
+    {
+        task_status: 'in progress',
+        select_bg_color: 'bg-info'
+    },
+    {
+        task_status: 'canceled',
+        select_bg_color: 'bg-danger'
+    },
+    {
+        task_status: 'done',
+        select_bg_color: 'bg-success'
+    }
+]
 
 window.onload = () =>{
 
-    get_username(id)
-    get_user_tasks(id)
+    get_username(id_user)
+    get_user_tasks(id_user)
 
 }
 
-async function get_username(id){
+async function get_username(id_user){
     
-    await fetch(`http://localhost:3000/user/${id}`)
+    await fetch(`http://localhost:3000/user/${id_user}`)
     .then(response => {
         if(response.status === 200){
             return response.json()
@@ -29,9 +48,9 @@ async function get_username(id){
 
 }
 
-async function get_user_tasks(id){
+async function get_user_tasks(id_user){
     
-    await fetch(`http://localhost:3000/user/${id}/tasks`)
+    await fetch(`http://localhost:3000/user/${id_user}/tasks`)
     .then(response => {
         if(response.status === 200){
             return response.json()
@@ -45,8 +64,10 @@ async function get_user_tasks(id){
             document.querySelector(".container_tarefas").classList.add("d-none")
         }else{
             document.querySelector("#tasks_container").innerHTML = null
-            
+
             tarefas.forEach((tarefa) => {
+                let color = colors.find(item => item.task_status == tarefa.task_status)
+
                 let html = 
                 `
                     <div class="col-12 border border-secundary rounded p-3 shadow">
@@ -58,15 +79,27 @@ async function get_user_tasks(id){
                                 </div>
                             </div>
                             <div class="col-2">
-                                <select id="task_status-${tarefa.id}" class="form-select p-2">
+                                <select id="task_status_${tarefa.id}" onchange="change_task_status(${tarefa.id})" class="form-select p-2 ${color.select_bg_color}">
                                     <option value="new" ${ tarefa.task_status == "new" ? 'selected' : '' }>New</option>
                                     <option value="in progress"${ tarefa.task_status == "in progress" ? 'selected' : '' }>In progress</option>
                                     <option value="canceled" ${ tarefa.task_status == "canceled" ? 'selected' : '' }>Canceled</option>
                                     <option value="done" ${ tarefa.task_status == "done" ? 'selected' : '' }>Done</option>
                                 </select>
                             </div>
-                            <div class="col-1 text-end"><span class="edit_link" data-id-task="${tarefa.id}"><i class="fa-regular fa-pen-to-square text-end me-2"></i>Edit</span></div>
-                            <div class="col-1 text-end text-danger"><i class="fa-solid fa-trash-can me-2"></i>Delete</div>
+                            
+                            <div class="col-1 text-end">
+                                <span class="edit_link" onclick="edit_task(${tarefa.id})">
+                                    <i class="fa-regular fa-pen-to-square text-end me-2"></i>
+                                        Edit
+                                    </span>
+                            </div>
+
+                            <div class="col-1 text-end">
+                                <span class="delete_link" onclick="delete_task(${tarefa.id})">
+                                <i class="fa-solid fa-trash-can me-2"></i>
+                                    Delete
+                                </span>
+                            </div>
                         </div>
                     </div>
                 `
@@ -84,3 +117,50 @@ async function get_user_tasks(id){
         }
     })
 }
+
+function edit_task(id_task){
+    const url = window.location.origin + "/edit_task.html?id_task=" + id_task  
+    window.location.href = url
+}
+
+function delete_task(id_task){
+    console.log(id_task)
+}
+
+function change_task_status(id_task){
+
+    let status = document.querySelector("#task_status_" + id_task).value
+    /*
+        id_user
+        id_task
+        status
+    */
+
+    fetch(`http://localhost:3000/user/tasks/update_status/`, {
+        method: 'POST',
+        headers: {'Content-Type' : 'application/json' },
+        body: JSON.stringify({id_task, status})
+    })
+    .then(response => {
+        if(response.status == 200){
+            return response.json()
+        }
+    })
+
+    //update select color based on task status
+    let select = document.querySelector(`#task_status_${id_task}`)
+    let color_obj = colors.find(e => e.task_status == status)
+
+    let color_temp = colors.map(c => { return c.select_bg_color })
+
+    select.classList.remove(...color_temp)
+
+    select.classList.add(color_obj.select_bg_color)
+}
+
+document.querySelector('#btn_new_task').addEventListener('click', ()=> {
+
+    const url = window.location.origin + "/new_task.html?id_user=" + id_user   
+    window.location.href = url
+
+})

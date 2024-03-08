@@ -16,6 +16,7 @@ app.listen(3000, () => {
 })
 
 app.use(cors())
+app.use(express.json())
 
 //rotas
 app.get("/", (req, res) => {
@@ -44,3 +45,31 @@ app.get("/user/:id/tasks", (req, res) => {
         res.json(results)
     })
 })
+
+//------------------------------------------------------------
+
+app.post("/user/tasks/update_status", (req, res) => {
+    connection.query("UPDATE tasks SET task_status = ?, updated_at = NOW() WHERE id = ?", [req.body.status, req.body.id_task], (err, results)=> {
+        if(err) res.send('MySQL connection error.')
+    })
+    res.json("ok respsota ok")
+})
+
+//-------------------------------------------------------------
+
+app.post("/user/tasks/new_task/", (req, res) => {
+    connection.query("INSERT INTO tasks VALUES(0, ?, ?, 'new', NOW(), NOW())", [req.body.id_user, req.body.task_text], (err, results)=> {
+        if(err) res.send('MySQL connection error.')
+    })
+    res.json("ok respsota ok")
+})
+
+app.get("/user/tasks/get_task/:id_task/", (req, res) => {
+    connection.query("SELECT * FROM tasks WHERE id = ?", [req.params.id_task], (err, results)=> {
+        if(err) res.send('MySQL connection error.')
+        
+        res.json(results)
+    })
+})
+
+
