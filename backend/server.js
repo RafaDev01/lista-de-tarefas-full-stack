@@ -38,12 +38,20 @@ app.get("/user/:id", (req, res) => {
 })
 
 //-----------------------------------------------
-app.get("/user/:id/tasks", (req, res) => {
-    connection.query("SELECT * FROM tasks WHERE id_user = ?", [req.params.id], (err, results)=> {
-        if(err) res.send('MySQL connection error.')
-        
-        res.json(results)
-    })
+app.get("/user/:id/tasks/:status", (req, res) => {
+    if(req.params.status !== "all"){
+        connection.query("SELECT * FROM tasks WHERE id_user = ? AND task_status = ?", [req.params.id, req.params.status], (err, results)=> {
+            if(err) res.send('MySQL connection error.')
+            
+            res.json(results)
+        })
+    }else{
+        connection.query("SELECT * FROM tasks WHERE id_user = ?", [req.params.id], (err, results)=> {
+            if(err) res.send('MySQL connection error.')
+            
+            res.json(results)
+        })
+    }
 })
 
 //------------------------------------------------------------
@@ -64,6 +72,7 @@ app.post("/user/tasks/new_task/", (req, res) => {
     res.json("ok respsota ok")
 })
 
+//-----------------------------------------
 app.get("/user/tasks/get_task/:id_task/", (req, res) => {
     connection.query("SELECT * FROM tasks WHERE id = ?", [req.params.id_task], (err, results)=> {
         if(err) res.send('MySQL connection error.')
@@ -72,4 +81,30 @@ app.get("/user/tasks/get_task/:id_task/", (req, res) => {
     })
 })
 
+//-------------------------------------------------------------
 
+app.post("/user/tasks/update_task/", (req, res) => {
+    connection.query("UPDATE tasks SET task_text = ?, updated_at = NOW() WHERE id = ?", [req.body.task_text, req.body.id_task], (err, results)=> {
+        if(err) res.send('MySQL connection error.')
+    })
+    res.json("ok respsota ok")
+})
+
+//------------------------------------------------------------
+
+/* FIZ ESSA PARTE SOZINHO COM BASE NO QUE APRENDI E FUNCIONOU.
+app.delete("/user/tasks/delete_task/", (req, res) => {
+    connection.query("DELETE from tasks WHERE id = ?", [req.body.id_task], (err, results)=> {
+        if(err) res.send('MySQL connection error.')
+    })
+    res.json("ok respsota ok")
+})
+*/
+
+//-------------------------------------------------------------
+app.get("/user/tasks/delete_task/:id_task/", (req, res) => {
+    connection.query("DELETE FROM tasks WHERE id = ?", [req.params.id_task], (err, results)=> {
+        if(err) res.send('MySQL connection error.')
+        res.json(results)
+    })
+})

@@ -48,9 +48,8 @@ async function get_username(id_user){
 
 }
 
-async function get_user_tasks(id_user){
-    
-    await fetch(`http://localhost:3000/user/${id_user}/tasks`)
+function get_user_tasks(id_user, status = "all"){   
+    fetch(`http://localhost:3000/user/${id_user}/tasks/${status}`)
     .then(response => {
         if(response.status === 200){
             return response.json()
@@ -124,7 +123,8 @@ function edit_task(id_task){
 }
 
 function delete_task(id_task){
-    console.log(id_task)
+    const url = window.location.origin + "/delete_task.html?id_task=" + id_task  
+    window.location.href = url
 }
 
 function change_task_status(id_task){
@@ -163,4 +163,12 @@ document.querySelector('#btn_new_task').addEventListener('click', ()=> {
     const url = window.location.origin + "/new_task.html?id_user=" + id_user   
     window.location.href = url
 
+    
+})
+
+document.querySelector("#select_filter").addEventListener('change', ()=> {
+    let task_status = document.querySelector('#select_filter').value
+    get_user_tasks(id_user, task_status)
+
+    
 })

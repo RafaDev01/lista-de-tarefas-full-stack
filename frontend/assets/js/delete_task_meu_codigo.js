@@ -22,6 +22,7 @@ window.onload = () =>{
 }
 
 document.querySelector("#btn_deletar").addEventListener('click', () => {
+    /*
     let task_text = document.querySelector("#text_task_text").value
     let error = document.querySelector('#error')
 
@@ -41,13 +42,13 @@ document.querySelector("#btn_deletar").addEventListener('click', () => {
         error.classList.remove('d-none')
 
         return
-    }
+    }*/
 
-    //update new task in database
-    fetch(`http://localhost:3000/user/tasks/update_task/`, {
-        method: 'POST',
+    //delete new task in database
+    fetch(`http://localhost:3000/user/tasks/delete_task/`, {
+        method: 'DELETE',
         headers: {'Content-Type' : 'application/json' },
-        body: JSON.stringify({ id_task, task_text })
+        body: JSON.stringify({ id_task })
     })
     .then(response => {
         if(response.status == 200){
