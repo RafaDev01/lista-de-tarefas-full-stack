@@ -166,9 +166,10 @@ document.querySelector('#btn_new_task').addEventListener('click', ()=> {
     
 })
 
-document.querySelector("#select_filter").addEventListener('change', ()=> {
+document.querySelector("#select_filter").addEventListener('change', ()=> {  
+    document.querySelector('#tasks_container').innerHTML = ''
+
     let task_status = document.querySelector('#select_filter').value
     get_user_tasks(id_user, task_status)
-
-    
+    console.log(task_status)
 })

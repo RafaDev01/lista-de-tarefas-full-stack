@@ -21,7 +21,7 @@ window.onload = () =>{
         })
 }
 
-document.querySelector("#btn_deletar").addEventListener('click', () => {
+document.querySelector("#btn_atualizar").addEventListener('click', () => {
     let task_text = document.querySelector("#text_task_text").value
     let error = document.querySelector('#error')
 

@@ -1,4 +1,5 @@
 const express = require('express')
+const bodyParser = require('body-parser');
 const mysql = require('mysql')
 const cors = require('cors')
 
@@ -16,14 +17,34 @@ app.listen(3000, () => {
 })
 
 app.use(cors())
-app.use(express.json())
+app.use(bodyParser.json());
 
 //rotas
+app.post('/login', (req, res) => {
+    const { user, pw } = req.body;
+
+    connection.query("SELECT id FROM users WHERE username = ? AND passwrd = ?", [user, pw], (err, results) => {
+        if (err) {
+            res.status(500).send(err.sqlMessage);
+        } else {
+            if (results.length > 0) {
+                const id = results[0].id;
+                console.log('id correspondente: ' + results[0].id)
+                res.status(200).json({ id: id });
+            } else {
+                console.log('log in incorreto')
+                res.status(401).send("Usuário ou senha incorretos.");
+            }
+        }
+    });
+});
+
 app.get("/", (req, res) => {
     //res.send('Olá Mundo')
     connection.query("SELECT COUNT(*) users FROM users", (err, results)=> {
         if(err) res.send('MySQL connection error.')
         
+        console.log(req.params)
         res.send('MySQL connection OK.')
     })
 })
