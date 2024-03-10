@@ -4,17 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fontawesome/all.min.css">
 </head>
 <body>
-    <h1>Página de Login</h1>
     <!-- Formulário de login -->
-    <form action="/login" method="POST">
-        <label for="username">Usuário:</label>
-        <input type="text" id="username" name="username"><br>
-        <label for="password">Senha:</label>
-        <input type="password" id="password" name="password"><br>
-        <button type="submit" id="submit_form">Entrar</button>
-    </form>
+    <h1 class="d-flex justify-content-center mb-5">Página de Login</h1>
+    <div class="container d-flex justify-content-center">
+        <form class="w-100" action="/login" method="POST">
+            <label for="username">Usuário:</label>
+            <input class="me-5 w-100 mb-4" type="text" id="username" name="username"><br>
+            <label for="password">Senha:</label>
+            <input class="me-5 w-100" type="password" id="password" name="password"><br>
+            <button class="w-100 mt-3" type="submit" id="submit_form">Entrar</button>
+        </form>
+    </div>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/login.js"></script>
 </body>
 </html>

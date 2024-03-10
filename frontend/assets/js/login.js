@@ -11,14 +11,19 @@ document.querySelector("#submit_form").addEventListener('click', (e)=> {
     })
     .then(response => {
         if(response.status == 200){
-            window.location.href = window.location.origin + "/index.html"
             return response.json()
         }else{
             throw new Error()
         }
+    })
+    .then(data => {
+        const id_user = data.id;
+        localStorage.setItem('id_user', id_user);
+        window.location.href = window.location.origin + "/index.html"
     })
     .catch((e) => {
         alert(e + ' log in incorreto')
     })
 
 })
+

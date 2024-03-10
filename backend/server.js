@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql')
 const cors = require('cors')
 
-//opções de conexão com o MySQL
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -19,6 +18,17 @@ app.listen(3000, () => {
 app.use(cors())
 app.use(bodyParser.json());
 
+let user_id = null
+
+/*
+app.use((req, res, next) => {
+    if (user_id) {
+        console.log(user_id);
+        res.send(user_id); // Envie o ID do usuário como resposta
+        next(); // Continue para o próximo middleware ou rota
+    }
+});*/
+
 //rotas
 app.post('/login', (req, res) => {
     const { user, pw } = req.body;
@@ -29,7 +39,7 @@ app.post('/login', (req, res) => {
         } else {
             if (results.length > 0) {
                 const id = results[0].id;
-                console.log('id correspondente: ' + results[0].id)
+                user_id = results[0].id
                 res.status(200).json({ id: id });
             } else {
                 console.log('log in incorreto')
@@ -40,7 +50,6 @@ app.post('/login', (req, res) => {
 });
 
 app.get("/", (req, res) => {
-    //res.send('Olá Mundo')
     connection.query("SELECT COUNT(*) users FROM users", (err, results)=> {
         if(err) res.send('MySQL connection error.')
         
